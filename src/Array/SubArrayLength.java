@@ -13,7 +13,7 @@ public class SubArrayLength {
         int[] arr = {1,2,2,1,3,1,1,6,1,1,1};
         int k = 15;
 
-       // System.out.println(bruteForce(arr, 3));
+        System.out.println(bruteForce(arr, 3));
 
         System.out.println(optimal(arr, 3));
     }
