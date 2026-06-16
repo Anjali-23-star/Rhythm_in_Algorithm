@@ -1,6 +1,7 @@
 package ArrayMedium;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 // Given an array of integers and an integer K , return the total number of subarrays whose sum equals K.
 public class SubArraySumEqualsK {
@@ -9,6 +10,8 @@ public class SubArraySumEqualsK {
         int[] arr = {3,1,2,4};
         int target = 6;
         brute(arr,target);
+
+        System.out.println(optimal(arr, target));
     }
 
     public static void brute(int[] arr, int k) {
@@ -36,5 +39,42 @@ public class SubArraySumEqualsK {
                 }
             }
         }
+    }
+
+    public static int optimal(int[] arr, int k) {
+        /**
+         * APPROACH:
+         *           1. Using prefix sum. Storing [prefixsum, count of prefix sum].
+         *              The count is to keep track of all the available sub arrays.
+         *           2. Store the intital entry as [0, 1] because at the start, we have 0 as the prefix sum.
+         *           3. Since sum = P[R]-P[L], we check if for our target k, is there a prefix sum P[current]-target in
+         *              our map. If yes-> count of subarrays += 1.
+         *               If no, add it to map, and count = 1.
+         *
+         *              NOTE if there exists another P[R] such that target-P[R]=existsign, then increase that count.
+         *              So, we have all the possible sub arrays.
+         *
+         *              COMPELXITY: O(N).
+         */
+        int totalSubArrays = 0;
+        int currentPrefixSum =0;
+
+        HashMap<Integer, Integer> prefixSumCountMap = new HashMap<>();
+        prefixSumCountMap.put(0,1);
+
+        for(int num:arr) {
+          currentPrefixSum+=num;
+
+          int removeSum = currentPrefixSum-k;
+
+          if(prefixSumCountMap.containsKey(removeSum)) {
+              totalSubArrays += prefixSumCountMap.get(removeSum);
+          }
+
+          prefixSumCountMap.put(currentPrefixSum, prefixSumCountMap.getOrDefault(currentPrefixSum,0)+1);
+
+        }
+
+        return totalSubArrays;
     }
 }
