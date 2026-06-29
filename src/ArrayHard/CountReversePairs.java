@@ -28,7 +28,7 @@ public class CountReversePairs {
     }
 
     public static void optimal(int[] arr){
-      divide(arr, 0,arr.length);
+      divide(arr, 0,arr.length-1);
 
 
         System.out.println(count);
@@ -45,41 +45,52 @@ public class CountReversePairs {
 
         divide(arr, mid+1, high);
 
+        countPairs(arr, low, mid, high);
+
         merge(arr, low, mid, high);
-
-
     }
 
     public static void merge(int[] arr, int low, int mid, int high) {
-        int left = arr[low];
+        int left = low;
         int right = mid+1;
 
         final var temp = new ArrayList<Integer>();
 
-        while(left<=right) {
+        while(left<=mid && right<=high) {
             if(arr[left]<arr[right]) {
                 temp.add(arr[left]);
                 left++;
             }
-            else if (arr[left]>2*arr[right]+1){
-                count+=mid-left+1;
+            else {
+                temp.add(arr[right]);
                 right++;
             }
         }
-        while(left<mid) {
+        while(left<=mid) {
             temp.add(arr[left]);
             left++;
         }
-        while(right<high) {
+        while(right<=high) {
             temp.add(arr[right]);
             right++;
         }
 
-        for(int i=low;i<high;i++) {
-            arr[low]=temp.get(i-low);
+        for(int i=low;i<=high;i++) {
+            arr[i]=temp.get(i-low);
         }
 
     }
 
+    public static void countPairs(int[] arr, int low, int mid, int high) {
+        int right = mid+1;
 
+        for(int i=low;i<=mid;i++) {
+            while(right<=high && arr[i]>2L*arr[right]) {
+                // shift the counter of the right.
+                right++;
+            }
+
+            count += right-(mid+1);
+        }
+    }
 }
