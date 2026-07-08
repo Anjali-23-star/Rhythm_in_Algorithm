@@ -11,7 +11,8 @@ public class TimesArrayRotated {
     public static void optimal(int[] arr) {
         int low = 0;
         int high = arr.length - 1;
-        int minimumIndex = Integer.MAX_VALUE;
+        int minimumIndex = -1;
+        int minimum = Integer.MAX_VALUE;
 
 
             while (low <= high) {
@@ -21,12 +22,18 @@ public class TimesArrayRotated {
                 //If left half is sorted.
                 if (arr[low] <= arr[mid]) {
                     // store the index of 'potential minimum' to the variable.
-                    minimumIndex = Math.min(minimumIndex, arr[low]);
+                    if(arr[low]<minimum) {
+                        minimum=arr[low];
+                        minimumIndex = low;
+                    }
 
                     low = mid + 1;
                 } else {
                     // The right is sorted, store the 'potential minimum' to the variable.
-                    minimumIndex = Math.min(arr[mid], minimumIndex);
+                    if(arr[mid]<minimum) {
+                        minimum = arr[mid];
+                        minimumIndex = mid;
+                    }
 
                     high = mid - 1;
                 }
